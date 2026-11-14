@@ -1,1 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
 
+  <title>RAA Ridgeland | Family Portal</title>
+  <meta name="theme-color" content="#0b100c">
+  <meta name="apple-mobile-web-app-title" content="RAA Ridgeland">
+
+  <!-- Your existing logo file -->
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="./apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700;1,800&family=Inter:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+  <style>
+    :root {
+      --lime: #c5ff36;
+      --background: #0b100c;
+      --card: #192019;
+      --border: #667063;
+      --muted: #b6bdb4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #060906;
+      color: #fff;
+      font-family: Inter, Arial, sans-serif;
+      line-height: 1.45;
+    }
+
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid var(--lime);
+      outline-offset: 4px;
+    }
+
+    .app {
+      max-width: 500px;
+      min-height: 100dvh;
+      margin: auto;
+      background: var(--background);
+      border-inline: 1px solid #343c32;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px;
+      border-bottom: 1px solid #293127;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font: italic 800 27px "Barlow Condensed", sans-serif;
+    }
+
+    .brand img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 9px;
+    }
+
+    .notification {
+      border: 0;
+      background: transparent;
+      padding: 7px;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: middle;
+    }
+
+    main { padding: 22px 18px 120px; }
+
+    h1, h2, h3 {
+      font-family: "Barlow Condensed", Impact, sans-serif;
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: .98;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(44px, 12vw, 60px);
+      color: var(--lime);
+      margin: 16px 0 22px;
+    }
+
+    h2 { font-size: 31px; }
+    h3 { font-size: 25px; }
+
+    p { margin: 10px 0; }
+
+    .muted { color: var(--muted); font-size: 14px; }
+
+    .greeting {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+    }
+
+    .badge {
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .filters button, .chips span {
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      background: transparent;
+      padding: 8px 15px;
+    }
+
+    .filters button.active,
+    .switch button.active,
+    .days button.active {
+      background: var(--lime);
+      color: #10160b;
+      border-color: var(--lime);
+      font-weight: 800;
+    }
+
+    .card {
+      background: linear-gradient(125deg, #20271f, #131a14);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    .hero {
+      background:
+        linear-gradient(90deg, #0b140dec, #0b140d75),
+        url("https://images.unsplash.com/photo-1459865264687-595d652de67e?auto=format&fit=crop&w=900&q=85")
+        center / cover;
+    }
+
+    .hero .sport { margin-top: 40px; }
+
+    .event-title {
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 800;
+      margin: 6px 0 18px;
+    }
+
+    .info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 11px 0;
+    }
+
+    .info svg { flex-shrink: 0; }
+
+    .primary {
+      display: block;
+      width: 100%;
+      border: 0;
+      background: var(--lime);
+      color: #10160b;
+      font-size: 18px;
+      font-weight: 800;
+      padding: 15px 10px;
+      border-radius: 11px;
+      margin-top: 22px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .link {
+      background: transparent;
+      border: 0;
+      color: var(--lime);
+      padding: 4px 0;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .switch {
+      display: flex;
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 22px 0 14px;
+    }
+
+    .switch button {
+      flex: 1;
+      padding: 10px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px;
+      margin: 12px 0 24px;
+    }
+
+    .days button {
+      padding: 11px 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .day-heading { margin: 20px 0 12px; }
+
+    .event {
+      width: 100%;
+      text-align: left;
+    }
+
+    .event strong { display: block; font-size: 24px; }
+
+    .status {
+      display: inline-block;
+      padding: 5px 8px;
+      border: 1px solid #e5b400;
+      color: #ffd634;
+      border-radius: 7px;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .status.going {
+      color: var(--lime);
+      border-color: var(--lime);
+    }
+
+    .back {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      margin-bottom: 12px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .chips span { padding: 5px 9px; font-size: 12px; }
+
+    .choices { display: flex; gap: 7px; margin-top: 15px; }
+
+    .choices button {
+      flex: 1;
+      padding: 12px 3px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #101710;
+      font-size: 13px;
+    }
+
+    .choices button.selected {
+      background: var(--lime);
+      color: #10160b;
+      border-color: var(--lime);
+      font-weight: 800;
+    }
+
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      background: #111911f5;
+      border-top: 1px solid #4a5547;
+      padding: 9px 6px max(12px, env(safe-area-inset-bottom));
+      z-index: 10;
+    }
+
+    nav button {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: #fff;
+      padding: 5px 0;
+      font-size: 12px;
+    }
+
+    nav svg { display: block; margin: 0 auto 5px; width: 27px; height: 27px; }
+    nav button.active { color: var(--lime); }
+
+    footer {
+      color: var(--muted);
+      font-size: 9px;
+      text-align: center;
+      margin-top: 25px;
+      letter-spacing: .5px;
+    }
+
+    #message {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 90%;
+      background: var(--lime);
+      color: #10160b;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      z-index: 20;
+    }
+
+    #message:empty { display: none; }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <img src="./apple-touch-icon.png" alt="RAA Ridgeland logo">
+        <span>RAA RIDGELAND</span>
+      </div>
+
+      <button class="notification"
+              aria-label="Notifications"
+              onclick="showMessage('No new updates in this demo.')">
+        <svg viewBox="0 0 24 24">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+          <path d="M10 21h4"/>
+        </svg>
+      </button>
+    </header>
+
+    <main id="content"></main>
+  </div>
+
+  <nav id="navigation" aria-label="Main navigation"></nav>
+  <div id="message" role="status"></div>
+
+  <script>
+    const icons = {
+      home: '<path d="m3 10 9-7 9 7v11h-6v-7H9v7H3z"/>',
+      calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 11h18"/>',
+      family: '<circle cx="12" cy="7" r="3"/><path d="M6 21v-3a6 6 0 0 1 12 0v3M4 7a3 3 0 0 0 0 6m16-6a3 3 0 0 1 0 6"/>',
+      help: '<path d="m12 20-8-8a5 5 0 0 1 8-6 5 5 0 0 1 8 6z"/>',
+      clock: '<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/>',
+      pin: '<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2"/>'
+    };
+
+    function icon(name) {
+      return `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name]}</svg>`;
+    }
+
+    const events = [
+      {
+        id: "practice",
+        child: "Mateo",
+        team: "10U",
+        day: "Tuesday",
+        dayIndex: 1,
+        title: "Team practice",
+        time: "5:30 PM",
+        arrival: "5:15 PM",
+        field: "Field 2"
+      },
+      {
+        id: "game",
+        child: "Sofia",
+        team: "8U",
+        day: "Saturday",
+        dayIndex: 5,
+        title: "Game day",
+        time: "9:00 AM",
+        arrival: "8:30 AM",
+        field: "Field 4"
+      }
+    ];
+
+    let page = "home";
+    let filter = "All children";
+    let mode = "Week";
+    let selectedDay = 1;
+    let selectedEvent = "practice";
+    let messageTimer;
+
+    let saved = {};
+
+    try {
+      saved = JSON.parse(localStorage.getItem("raa-portal-demo") || "{}");
+    } catch {}
+
+    const attendance = saved.attendance || { game: "Going" };
+    const volunteering = saved.volunteering || {};
+
+    function save() {
+      try {
+        localStorage.setItem(
+          "raa-portal-demo",
+          JSON.stringify({ attendance, volunteering })
+        );
+      } catch {}
+    }
+
+    function showMessage(text) {
+      clearTimeout(messageTimer);
+      document.getElementById("message").textContent = text;
+
+      messageTimer = setTimeout(() => {
+        document.getElementById("message").textContent = "";
+      }, 3000);
+    }
+
+    function navigate(nextPage) {
+      page = nextPage;
+      render();
+      window.scrollTo(0, 0);
+    }
+
+    function openEvent(id) {
+      selectedEvent = id;
+      navigate("details");
+    }
+
+    function setFilter(name) {
+      filter = name;
+      render();
+    }
+
+    function filters() {
+      return `
+        <div class="filters">
+          ${["All children", "Mateo", "Sofia"].map(name => `
+            <button class="${filter === name ? "active" : ""}"
+                    onclick="setFilter('${name}')">
+              ${name}
+            </button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function eventInfo(event) {
+      return `
+        <div class="info">
+          ${icon("calendar")}
+          <span>${event.day.slice(0, 3).toUpperCase()} · ${event.time}</span>
+        </div>
+        <div class="info">
+          ${icon("clock")}
+          <span>Arrive ${event.arrival}</span>
+        </div>
+        <div class="info">
+          ${icon("pin")}
+          <span>${event.field} · Sample location</span>
+        </div>
+      `;
+    }
+
+    function eventCard(event) {
+      return `
+        <button class="card event" onclick="openEvent('${event.id}')">
+          <span class="muted">${event.child} · Soccer ${event.team}</span>
+          <strong>${event.title}</strong>
+          <p class="muted">${event.time} · Arrive ${event.arrival}</p>
+          <div class="muted">${event.field}</div>
+          <span class="status ${attendance[event.id] === "Going" ? "going" : ""}">
+            ${attendance[event.id] || "Response needed"}
+          </span>
+        </button>
+      `;
+    }
+
+    function updateAttendance(answer) {
+      attendance[selectedEvent] = answer;
+      save();
+      render();
+      showMessage("Attendance saved on this device.");
+    }
+
+    function toggleVolunteer(id) {
+      volunteering[id] = !volunteering[id];
+      save();
+      render();
+      showMessage(
+        volunteering[id] ? "Demo signup saved." : "Demo signup withdrawn."
+      );
+    }
+
+    function render() {
+      const visibleEvents = events.filter(event =>
+        filter === "All children" || event.child === filter
+      );
+
+      const nextEvent = visibleEvents[0] || events[0];
+      let html = "";
+
+      if (page === "home") {
+        html = `
+          <div class="greeting">
+            <span>Hi, Alex</span>
+            <span class="badge">SOCCER BETA</span>
+          </div>
+
+          <h1>Ready for<br>the week?</h1>
+          ${filters()}
+
+          <section class="card hero">
+            <h2>Next up</h2>
+            <div class="sport muted">
+              ${nextEvent.child} · SOCCER ${nextEvent.team}
+            </div>
+            <div class="event-title">${nextEvent.title}</div>
+            ${eventInfo(nextEvent)}
+            <button class="primary" onclick="openEvent('${nextEvent.id}')">
+              ${attendance[nextEvent.id] ? "View attendance" : "Confirm attendance"}
+            </button>
+          </section>
+
+          <section class="card row">
+            <h3>This week</h3>
+            <button class="link" onclick="navigate('schedule')">
+              View schedule →
+            </button>
+          </section>
+
+          <section class="card">
+            <div class="row">
+              <strong>Help your team</strong>
+              <button class="link" aria-label="View volunteer opportunities"
+                      onclick="navigate('help')">→</button>
+            </div>
+            <p class="muted">Volunteer at an upcoming event.</p>
+          </section>
+        `;
+      }
+
+      if (page === "schedule") {
+        const scheduled = visibleEvents.filter(event =>
+          mode === "Week" || event.dayIndex === selectedDay
+        );
+
+        html = `
+          <h1>Your week</h1>
+          ${filters()}
+
+          <div class="switch">
+            ${["Week", "Day"].map(value => `
+              <button class="${mode === value ? "active" : ""}"
+                      onclick="mode='${value}';render()">
+                ${value}
+              </button>
+            `).join("")}
+          </div>
+
+          <p class="muted">SAMPLE WEEK</p>
+
+          <div class="days">
+            ${["M", "T", "W", "T", "F", "S", "S"].map((day, index) => `
+              <button class="${selectedDay === index ? "active" : ""}"
+                      aria-label="${["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"][index]}"
+                      onclick="selectedDay=${index};mode='Day';render()">
+                ${day}
+              </button>
+            `).join("")}
+          </div>
+
+          ${scheduled.length ? scheduled.map(event => `
+            <h3 class="day-heading">${event.day}</h3>
+            ${eventCard(event)}
+          `).join("") : `
+            <div class="card">
+              <h3>Time to recharge</h3>
+              <p class="muted">No activities scheduled for this day.</p>
+            </div>
+          `}
+        `;
+      }
+
+      if (page === "details") {
+        const event = events.find(item => item.id === selectedEvent);
+
+        html = `
+          <button class="back" onclick="navigate('schedule')">← Schedule</button>
+          <h1>${event.title}</h1>
+          <p>${event.child} · Soccer ${event.team}</p>
+
+          <section class="card">
+            ${eventInfo(event)}
+            <button class="link"
+                    onclick="showMessage('Sample location — no real map connected.')">
+              View map →
+            </button>
+          </section>
+
+          <section class="card">
+            <h3>This week’s focus</h3>
+            <p>Passing & moving into space</p>
+          </section>
+
+          <section class="card">
+            <h3>Bring</h3>
+            <div class="chips">
+              <span>Water</span>
+              <span>Shin guards</span>
+              <span>Cleats</span>
+              <span>Size 4 ball</span>
+            </div>
+          </section>
+
+          <section class="card">
+            <strong>Is ${event.child} going?</strong>
+            <div class="choices">
+              ${["Going", "Not going", "Not sure"].map(answer => `
+                <button class="${attendance[event.id] === answer ? "selected" : ""}"
+                        aria-pressed="${attendance[event.id] === answer}"
+                        onclick="updateAttendance('${answer}')">
+                  ${answer}
+                </button>
+              `).join("")}
+            </div>
+            <p class="muted">You can change your answer later.</p>
+          </section>
+
+          <section class="card">
+            <strong>Help with field setup</strong>
+            <p class="muted">Volunteer to set up before practice.</p>
+            <button class="link" onclick="navigate('help')">
+              View opportunities →
+            </button>
+          </section>
+        `;
+      }
+
+      if (page === "family") {
+        html = `
+          <h1>Your family</h1>
+          <p class="muted">Sample family · 2 children</p>
+
+          ${events.map(event => `
+            <section class="card">
+              <h2>${event.child}</h2>
+              <p class="muted">Soccer · ${event.team}</p>
+              <button class="primary"
+                      onclick="filter='${event.child}';navigate('schedule')">
+                View schedule →
+              </button>
+            </section>
+          `).join("")}
+
+          <button class="link"
+                  onclick="filter='All children';navigate('schedule')">
+            View all children →
+          </button>
+        `;
+      }
+
+      if (page === "help") {
+        const jobs = [
+          {
+            id: "setup",
+            title: "Field setup",
+            time: "Tuesday · 5:00–5:30 PM",
+            description: "Help get the field ready before practice."
+          },
+          {
+            id: "concessions",
+            title: "Concessions stand",
+            time: "Saturday · 9:00–10:00 AM",
+            description: "Help families at the game-day stand."
+          },
+          {
+            id: "translate",
+            title: "Translate the update",
+            time: "From home · Before Sunday",
+            description: "Help translate the weekly plan into Spanish."
+          }
+        ];
+
+        html = `
+          <h1>Help your team</h1>
+          <p class="muted">Choose one small job that works for your family.</p>
+
+          ${jobs.map(job => `
+            <section class="card">
+              <h2>${job.title}</h2>
+              <p>${job.time}</p>
+              <p class="muted">${job.description}</p>
+              <button class="primary" onclick="toggleVolunteer('${job.id}')">
+                ${volunteering[job.id] ? "Withdraw" : "Sign up →"}
+              </button>
+            </section>
+          `).join("")}
+        `;
+      }
+
+      document.getElementById("content").innerHTML = html + `
+        <footer>DESIGN DEMO · SAMPLE DATA · SAVED ON THIS DEVICE ONLY</footer>
+      `;
+
+      const items = [
+        ["home", "home", "Home"],
+        ["schedule", "calendar", "Schedule"],
+        ["family", "family", "Family"],
+        ["help", "help", "Help out"]
+      ];
+
+      document.getElementById("navigation").innerHTML = items.map(
+        ([target, symbol, label]) => `
+          <button class="${
+            page === target || (page === "details" && target === "schedule")
+              ? "active" : ""
+          }" onclick="navigate('${target}')">
+            ${icon(symbol)}
+            ${label}
+          </button>
+        `
+      ).join("");
+    }
+
+    render();
+  </script>
+</body>
+</html>
