@@ -360,7 +360,8 @@
     }
 
     #message:empty { display: none; }
-  </style>
+  .reel-placeholder{min-height:330px;padding:24px;display:flex;flex-direction:column;justify-content:end;border-radius:12px;background:radial-gradient(ellipse at top right,#4b652b,#152010 65%);margin-top:15px}.reel-placeholder>span{font-size:55px;text-align:center;margin:auto;color:var(--lime)}.reel-placeholder h2{font-size:42px}.reel-placeholder small{margin-top:14px;color:#c1ceb8}.eyebrow{font-size:11px;letter-spacing:1px;color:var(--lime)}.intro p{color:var(--muted)}.big-num{font:italic 800 64px 'Barlow Condensed',sans-serif;color:var(--lime)}.pill{border:1px solid var(--border);border-radius:12px;background:transparent;padding:10px}#navigation button{font-size:11px;min-width:0}.badge{white-space:normal}button{min-height:44px}
+</style>
 </head>
 
 <body>
@@ -426,7 +427,7 @@
       }
     ];
 
-    let page = "home";
+    let page = "feed";
     let filter = "All children";
     let mode = "Week";
     let selectedDay = 1;
@@ -535,6 +536,17 @@
         volunteering[id] ? "Demo signup saved." : "Demo signup withdrawn."
       );
     }
+
+const posts=[
+{type:'video',sport:'Soccer',label:'SOCCER · VIDEO',title:'Big moments. One team.',text:'Match highlights and vertical videos will appear here once published.'},
+{type:'news',sport:'All',label:'COMMUNITY · NEWS',title:'Welcome to The Ridge',text:'Your place for team news, season updates and community stories.'},
+{type:'help',sport:'All',label:'HELP OUT · FAMILY REWARDS',title:'Your time makes a difference',text:'Explore ways to help. Confirmed participation can earn family points.'}
+];let feedFilter='All';
+function feedView(){return '<div class="intro"><div><p>Our sports. Our community.</p><h1>The Ridge<br>Feed.</h1></div></div><div class="filters">'+['All','Soccer','Basketball'].map(x=>'<button class="pill '+(feedFilter===x?'active':'')+'" onclick="feedFilter=\''+x+'\';render()">'+x+'</button>').join('')+'</div>'+posts.filter(p=>feedFilter==='All'||p.sport===feedFilter||p.sport==='All').map(p=>'<article class="card"><div class="eyebrow" style="color:var(--lime)">'+p.label+'</div>'+(p.type==='video'?'<div class="reel-placeholder"><span aria-hidden="true">▷</span><h2>'+p.title+'</h2><small>Video preview · No video published yet</small></div>':'<h2 style="margin-top:16px">'+p.title+'</h2>')+'<p class="muted">'+p.text+'</p>'+(p.type==='help'?'<button class="primary" onclick="navigate(\'help\')">Find opportunities →</button>':'')+'</article>').join('')+'<button class="link" onclick="navigate(\'home\')">Your family’s week →</button>'}
+function profileView(){return '<div class="eyebrow">YOUR ACCOUNT</div><h1 style="margin:14px 0 25px">My profile.</h1><section class="card"><h2>Family</h2><p class="muted">Your children, teams and attendance.</p><button class="primary" onclick="navigate(\'family\')">Open Family →</button></section><section class="card"><div class="eyebrow">FAMILY POINTS · DEMO BALANCE</div><div class="big-num" style="font-size:64px">650 <small style="font:14px Inter">pts</small></div><h2>Earn Points & Rewards</h2><p class="muted">Help your community. Work toward rewards for your family.</p><button class="primary" onclick="navigate(\'rewards\')">Explore rewards →</button><p class="muted">Illustrative balance. No real points have been issued.</p></section>'}
+function rewardsView(){return '<button class="back" onclick="navigate(\'profile\')">← Profile</button><h1>Family<br>Rewards.</h1><p class="muted">650 example points · Rewards proposed, not available for redemption.</p>'+[{label:'CONCESSION STAND',title:'Game-day drink',points:'100',text:'A participating drink from the concession stand.'},{label:'MERCH',title:'Ridgeland T-shirt',points:'500',text:'Subject to sizes and stock.'},{label:'NEXT SEASON',title:'Registration credit',points:'1,000',text:'Apply toward next season’s registration. Amount to be confirmed.'}].map(r=>'<article class="card"><div class="eyebrow">'+r.label+'</div><h2 style="margin:14px 0">'+r.title+'</h2><p class="muted">'+r.text+'</p><div class="row"><strong style="color:var(--lime)">'+r.points+' pts*</strong><button class="pill" onclick="showMessage(\'Preview only. Rewards are not available yet.\')">Preview reward</button></div></article>').join('')+'<p class="muted">*Example values. Staff must confirm completed volunteer activities before awarding points. Final rewards and rules are pending.</p>'}
+function sportsView(){return '<div class="eyebrow">FIND YOUR TEAM</div><h1 style="margin:14px 0 25px">Our sports.</h1><article class="card"><h2>Soccer</h2><p class="muted">Explore your family’s soccer activities.</p><button class="primary" onclick="navigate(\'schedule\')">View schedule →</button></article><article class="card"><h2>Basketball</h2><p class="muted">Proposed sport · Teams and seasons not published yet.</p><span class="badge">COMING LATER</span></article>'}
+
 
     function render() {
       const visibleEvents = events.filter(event =>
@@ -683,7 +695,7 @@
 
       if (page === "family") {
         html = `
-          <h1>Your family</h1>
+          <button class="back" onclick="navigate(\'profile\')">← Profile</button><h1>Your family</h1>
           <p class="muted">Sample family · 2 children</p>
 
           ${events.map(event => `
@@ -728,7 +740,7 @@
 
         html = `
           <h1>Help your team</h1>
-          <p class="muted">Choose one small job that works for your family.</p>
+          <p class="muted">Choose one small job that works for your family.</p><section class="card"><h3>Earn family points</h3><p class="muted">Confirmed participation can earn points toward concession items, merch and next-season registration credit. Signing up alone does not earn points.</p><button class="link" onclick="navigate(\'rewards\')">Explore rewards →</button></section>
 
           ${jobs.map(job => `
             <section class="card">
@@ -743,21 +755,26 @@
         `;
       }
 
+      if (page === "feed") html = feedView();
+      if (page === "sports") html = sportsView();
+      if (page === "profile") html = profileView();
+      if (page === "rewards") html = rewardsView();
       document.getElementById("content").innerHTML = html + `
         <footer>DESIGN DEMO · SAMPLE DATA · SAVED ON THIS DEVICE ONLY</footer>
       `;
 
       const items = [
-        ["home", "home", "Home"],
+        ["feed", "home", "Feed"],
+        ["sports", "calendar", "Sports"],
         ["schedule", "calendar", "Schedule"],
-        ["family", "family", "Family"],
-        ["help", "help", "Help out"]
+        ["help", "help", "Help Out"],
+        ["profile", "family", "Profile"]
       ];
 
       document.getElementById("navigation").innerHTML = items.map(
         ([target, symbol, label]) => `
           <button class="${
-            page === target || (page === "details" && target === "schedule")
+            page === target || (page === "details" && target === "schedule") || (["family", "rewards"].includes(page) && target === "profile")
               ? "active" : ""
           }" onclick="navigate('${target}')">
             ${icon(symbol)}
@@ -771,3 +788,4 @@
   </script>
 </body>
 </html>
+
